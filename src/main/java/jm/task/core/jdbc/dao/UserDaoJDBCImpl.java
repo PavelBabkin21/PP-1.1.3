@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private final Connection connection = Util.getConnection();
+    private static final Connection connection = Util.getConnection();
 
     public UserDaoJDBCImpl() {
 
@@ -16,12 +16,12 @@ public class UserDaoJDBCImpl implements UserDao {
     public void createUsersTable() {
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("CREATE TABLE Users " +
-                    "(id LONG not NULL, " +
-                    "Name VARCHAR(30), " +
-                    " LastName VARCHAR(30), " +
-                    " age INTEGER, " +
-                    " PRIMARY KEY ( id ))");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `mydbtest`.`users` (" +
+                    "  `id` INT NOT NULL AUTO_INCREMENT," +
+                    "  `name` VARCHAR(45) NULL," +
+                    "  `lastName` VARCHAR(45) NULL," +
+                    "  `age` INT NULL," +
+                    "  PRIMARY KEY (`id`));");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,12 +38,12 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
-    public void saveUser(String name, String lastName, byte age) {
+    public void saveUser(String name, String LastName, byte age) {
         try {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("INSERT INTO mydbtest.users (name, lastName, age) VALUES(?, ?, ?)");
+                    connection.prepareStatement("INSERT INTO mydbtest.users (users.name, LastName, age) VALUES(?, ?, ?)");
             preparedStatement.setString(1, name);
-            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(2, LastName);
             preparedStatement.setByte(3, age);
 
             preparedStatement.executeUpdate();
@@ -73,7 +73,7 @@ public class UserDaoJDBCImpl implements UserDao {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong("id"));
-                user.setName(resultSet.getString("Name"));
+                user.setName(resultSet.getString("name"));
                 user.setLastName(resultSet.getString("LastName"));
                 user.setAge(resultSet.getByte("Age"));
 
@@ -81,7 +81,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return users;
     }

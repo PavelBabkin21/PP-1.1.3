@@ -68,6 +68,7 @@ public class UserDaoHibernateImpl implements UserDao {
             session.beginTransaction();
             User user = session.get(User.class, id);
             session.delete(user);
+
         } catch (PersistenceException e) {
             e.printStackTrace();
         }
@@ -79,7 +80,9 @@ public class UserDaoHibernateImpl implements UserDao {
         List<User> users = new ArrayList<>();
         try (Session session = getSessionFactory().openSession()) {
             session.beginTransaction();
-            users = session.createQuery("from User").getResultList();
+            String stringQuery = "from User";
+            users = session.createQuery(stringQuery).list();
+
 
         } catch (PersistenceException e) {
             e.printStackTrace();
@@ -94,6 +97,7 @@ public class UserDaoHibernateImpl implements UserDao {
             String stringQuery = "DELETE FROM User";
             Query query = session.createQuery(stringQuery);
             query.executeUpdate();
+
         } catch (PersistenceException e) {
             e.printStackTrace();
         }

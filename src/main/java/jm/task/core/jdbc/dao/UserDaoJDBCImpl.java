@@ -45,7 +45,6 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, LastName);
             preparedStatement.setByte(3, age);
-
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

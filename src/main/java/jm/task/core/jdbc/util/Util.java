@@ -39,6 +39,7 @@ public class Util {
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -51,6 +52,7 @@ public class Util {
         try {
             connection = DriverManager.getConnection(URL, userName, password);
             System.out.println("Connection OK");
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Connection ERROR");
